@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="../dist/texture.js"></script>
+  <script src="http://s3.amazonaws.com/es6-promises/promise-0.1.1.min.js"></script>
+</head>
+<body>
+
+  <div id="container"></div>
+  <script>
+    var map = new Texture('images/brickwork.jpg', {
+      normal : 'images/brickwork-normal.jpg',
+      brightness : 1,
+      shininess : 0,
+      ambient :.5
+    });
+    document.querySelector('#container').appendChild(map.renderElement);
+    map.loaded.then(function(){
+      console.time('loop');
+      console.profile('loop');
+      for (var x = 0; x < 512; x+=30) {
+        for (var y = 0; y < 512; y+=30) {
+          map.moveLight({x:x,y:y,z:100});
+        }
+      }
+      console.profileEnd('loop');
+      console.timeEnd('loop');
+    })
+  </script>
+</body>
+</html>

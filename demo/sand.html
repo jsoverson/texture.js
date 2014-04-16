@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Normal Map demo in JavaScript</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="http://s3.amazonaws.com/es6-promises/promise-0.1.1.min.js"></script>
+  <script src="../dist/texture.js"></script>
+</head>
+<body>
+
+<div>
+  <div id="container"></div>
+  <a href="./">go back</a>
+</div>
+  <script>
+    var map = new Texture('images/Sand_2_Diffuse.png', { normal : 'images/Sand_2_Normal.png' });
+    document.querySelector('#container').appendChild(map.renderElement);
+    map.moveLight({ x : 256, y : 256, z : 100});
+
+    document.addEventListener('mousemove', function(e){
+      map.moveLight({ x : e.pageX - map.renderElement.offsetLeft, y : e.pageY - map.renderElement.offsetTop, z : 100});
+    });
+  </script>
+</body>
+</html>
+

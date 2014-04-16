@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>JavaScript Normal Map demo</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container index">
+  <div class="jumbotron">
+    <h1>Normal Map Demo</h1>
+    <h2><small>Normal Mapped textures in JavaScript</small></h2>
+  </div>
+
+  <div class="row marketing">
+    <div class="col-lg-12">
+      <h2>What is it?</h2>
+      <p>
+        A pure JavaScript library that uses <a href="images/brickwork.jpg">textures</a> and <a href="images/brickwork-normal.jpg">normal maps</a>
+        to simulate 3d lighting with 2d images :
+      </p>
+    </div>
+
+    <div class="col-lg-12 center">
+      <iframe src="bricks.html" style="border:0;width:532px;height:552px"></iframe>
+    </div>
+
+    <div class="col-lg-12 center">
+      <h2>Demos</h2>
+      <p>
+        <a href="./bricks.html">Brickwork</a><br>
+        <a href="./copper.html">Metal</a><br>
+        <a href="./corrugated.html">Corrugated</a><br>
+        <a href="./lunar.html">Lunar landscape</a><br>
+        <a href="./rockface.html">Rock face</a><br>
+        <a href="./rocks.html">Rocks</a><br>
+        <a href="./sand.html">Sand</a><br>
+        <a href="./stones.html">Stones</a><br>
+      </p>
+    </div>
+
+    <div class="col-lg-12">
+      <h2>Is this useful?</h2>
+      <p>
+        Maybe. It's probably not useful in the standard way normal maps are used, providing texture to 3d models in games.
+        The goal was to provide subtly different backgrounds to elements without having unique images
+        per element.
+      </p>
+      <p>
+        With textures and normal maps, one texture can be made then reused, rotated, offset, all with different lighting
+        angles to provide variety to generic elements like buttons and paragraphs, like this:
+      </p>
+      <p class="center">
+        <button id="button1" class="textureButtons">Button 1</button>
+        <button id="button2" class="textureButtons">Button 2</button>
+        <button id="button3" class="textureButtons">Button 3</button>
+      </p>
+      <p>
+        The demo pages all show dynamic lighting following the mouse, but the intent was to generate a texture once,
+        apply it to an element, and then apply slight transformations to other elements. Dynamic lighting
+        just looks cool.
+      </p>
+      <p>
+        To further put this usefulness into question, this was written in ES6. It is transpiled down to be compatible
+        in modern browsers, but will require an ES6 promise shim if <code>Promise</code> is not available.
+      </p>
+    </div>
+
+    <div class="col-lg-12">
+      <h2>Inspiration</h2>
+      <p>
+        Jonas Wagner's implementation in 2010 served as proof that it could be done, simply. The implementation
+        is slightly different but wouldn't have happened without his
+        <a href="http://29a.ch/2010/3/24/normal-mapping-with-javascript-and-canvas-tag">demo</a> and explanation.
+      </p>
+      <p>
+        This was a personal experiment investigating ways to get creative with UI for a project using a stack similar to node-webkit.
+        My goal was to find ways to give richer life to UIs programmatically.
+      </p>
+    </div>
+  </div>
+
+  <div class="footer center">
+    <p>Textures taken from opengameart
+      (<a href="http://opengameart.org/content/free-tiling-textures-pack-57">1</a>,
+      <a href="http://opengameart.org/content/lunar-rock">2</a>) and
+      <a href="http://www.tutorialsforblender3d.com/Textures/Metal-Tarnished-NormalMap/Metal_Tarnished_Normal_1.html">tutorialsforblender3d.com</a>.
+    </p>
+    <p>&copy; Jarrod Overson 2014</p>
+  </div>
+
+</div> <!-- /container -->
+<style>
+  .textureButtons {
+    color:white;
+    height:50px;
+    width:120px;
+    /*background-position:-256px -33px;*/
+    border-width:1px;
+  }
+  #button1 {
+    border-image: linear-gradient(190deg, hsl(0,0%,50%), hsl(0,0%,5%)) 10% stretch;
+  }
+  #button2 {
+    border-image: linear-gradient(to bottom, hsl(0,0%,50%), hsl(0,0%,11%)) 10% stretch;
+  }
+  #button3 {
+    border-image: linear-gradient(166deg, hsl(0,0%,50%), hsl(0,0%,5%)) 10% stretch;
+  }
+</style>
+<script src="http://s3.amazonaws.com/es6-promises/promise-0.1.1.min.js"></script>
+<script src="../dist/texture.js"></script>
+<script>
+
+  var map = new Texture('images/CopperVerdigris-ColorMap.png', { normal : 'images/CopperVerdigris-NormalMap.png' });
+
+  var buttons = document.querySelectorAll('.textureButtons');
+
+  // this works well in chrome, but crap everywhere else.
+//  document.addEventListener('mousemove', function(e){
+//    buttons[0].style.backgroundImage = map.moveLight({ x : e.layerX - buttons[0].offsetLeft, y : e.layerY - buttons[0].offsetTop, z : 100}).toDataURL();
+//    buttons[1].style.backgroundImage = map.moveLight({ x : e.layerX - buttons[1].offsetLeft, y : e.layerY - buttons[1].offsetTop, z : 100}).toDataURL();
+//    buttons[2].style.backgroundImage = map.moveLight({ x : e.layerX - buttons[2].offsetLeft, y : e.layerY - buttons[2].offsetTop, z : 100}).toDataURL();
+//  });
+
+  map.loaded.then(function(){
+    buttons[0].style.backgroundImage = map.moveLight({ x : 181, y : -17, z : 100}).toDataURL();
+    buttons[1].style.backgroundImage = map.moveLight({ x : 60, y : -17, z : 100}).toDataURL();
+    buttons[2].style.backgroundImage = map.moveLight({ x : -64, y : -17, z : 100}).toDataURL();
+  })
+
+</script>
+
+
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+    function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+    e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+    e.src='//www.google-analytics.com/analytics.js';
+    r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+  ga('create','UA-XXXXX-X');ga('send','pageview');
+</script>
+</body>
+</html>

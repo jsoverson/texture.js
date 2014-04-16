@@ -1,0 +1,23 @@
+{
+  "name": "texture.js",
+  "version": "0.0.0",
+  "description": "Texture/Normal Map implementation",
+  "main": "src/texture.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "keywords": [
+    "texture",
+    "normal-map",
+    "normal",
+    "bump",
+    "map"
+  ],
+  "author": "Jarrod Overson",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "grunt-traceur": "0.0.3",
+    "grunt-contrib-watch": "~0.6.1"
+  }
+}
